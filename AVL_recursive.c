@@ -1,4 +1,4 @@
-/*A1 (50 pts). Linked AVL tree (Recursive):
+/*Linked AVL tree (Recursive):
  Search, Insert, Delete, together with a proper test.
 */
 
@@ -176,27 +176,28 @@ AVL_NODE findMax(AVL_NODE node)
     return node;
 }
 
-AVL_NODE searchNode(AVL tree, int key)
+AVL_NODE recursiveSearch(AVL_NODE root, int key)
 {
-
-    AVL_NODE currentNode = tree->root;
-    while (currentNode->key != key)
-    {
-        if (key < currentNode->key && currentNode->left != NULL)
-        {
-            currentNode = currentNode->left;
-        }
-        else if (key > currentNode->key && currentNode->right != NULL)
-        {
-            currentNode = currentNode->right;
-        }
-        else
-        {
-            printf("Key is not an element of tree");
-            break;
+    if(root!=NULL){
+        if(root->key < key){
+            root=recursiveSearch(root->right,key);
+        }else if(root->key > key){
+            root=recursiveSearch(root->left,key);
         }
     }
-    return currentNode;
+    return root;
+}
+
+AVL_NODE AVLsearch(AVL tree,int key){
+    if(tree!=NULL){
+        AVL_NODE node=recursiveSearch(tree->root,key);
+
+        if(node==NULL){
+            printf("ERROR:Key is not an element of tree.. ");
+        }else{
+            return node;
+        }
+    }
 }
 
 AVL_NODE leftRotation(AVL_NODE parent)
@@ -371,7 +372,7 @@ void testFunction()
 
     printf("--------------------------------\n");
     printf("Searching node with key 15 :\n----------------------------------\n");
-    AVL_NODE node = searchNode(tree1, 15);
+    AVL_NODE node = AVLsearch(tree1, 15);
     printf("Information of searched node:\n");
     printf("Key: %d , Height: %d Left: %p , Right: %p \n\n\n", node->key, node->height, node->left, node->right);
 
